@@ -1,8 +1,7 @@
-import { Employee } from "~/types";
-import { Database } from "./db";
+import { EmployeeMutation } from "~/types";
 
 /** Seed data for the employee database. */
-export const seedData: Employee[] = [
+export const seedData: EmployeeMutation[] = [
   {
     firstName: "Fred",
     lastName: "Flintstone",
@@ -38,16 +37,9 @@ export const seedData: Employee[] = [
     firstName: "Daenerys",
     lastName: "Targaryen",
     dependents: [
-      { firstName: "Drogon" },
-      { firstName: "Rhaegal" },
-      { firstName: "Viserion" },
+      { firstName: "Drogon", lastName: "" },
+      { firstName: "Rhaegal", lastName: "" },
+      { firstName: "Viserion", lastName: "" },
     ],
   },
 ];
-
-/** Employee data. */
-export const employeeDatabase = new Database();
-
-seedData.forEach((emp) => {
-  employeeDatabase.create(emp);
-});

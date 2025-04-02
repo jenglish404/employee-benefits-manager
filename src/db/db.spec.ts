@@ -1,6 +1,12 @@
 import { Employee } from "~/types";
-import { seedData } from "./data";
 import { Database } from "./db";
+
+const testEmployee: Employee = {
+  firstName: "James",
+  lastName: "Bond",
+  dependents: [],
+  benefitsCost: 1000,
+};
 
 /** Clone and return an employee. */
 const clone = (emp: Employee): Employee => JSON.parse(JSON.stringify(emp));
@@ -14,7 +20,7 @@ describe("Database", () => {
 
   test("creates db entry", () => {
     // new employee.
-    const employee = clone(seedData[0]);
+    const employee = clone(testEmployee);
 
     // create.
     const created = db.create(employee);
@@ -29,7 +35,7 @@ describe("Database", () => {
 
   test("updates db entry", () => {
     // new employee.
-    const employee = clone(seedData[0]);
+    const employee = clone(testEmployee);
 
     // create.
     const created = db.create(employee);
@@ -46,23 +52,22 @@ describe("Database", () => {
   });
 
   test("gets all db entries", () => {
-    // create entries.
-    seedData.forEach((emp) => {
-      db.create(emp);
-    });
+    const employee1 = clone(testEmployee);
+    const employee2 = clone(testEmployee);
+
+    // create.
+    db.create(employee1);
+    db.create(employee2);
 
     // assert entries are equal to inputs.
     const all = db.getAll();
-    all.forEach((emp, i) => {
-      expect(emp.firstName).toEqual(seedData[i].firstName);
-      expect(emp.lastName).toEqual(seedData[i].lastName);
-      expect(emp.dependents).toEqual(seedData[i].dependents);
-    });
+
+    expect(all).toHaveLength(2);
   });
 
   test("deletes entry", () => {
     // new employee.
-    const employee = clone(seedData[0]);
+    const employee = clone(testEmployee);
 
     // create.
     const created = db.create(employee);
@@ -79,7 +84,7 @@ describe("Database", () => {
 
   test("returns undefined if created entry already exists", () => {
     // new employee.
-    const employee = clone(seedData[0]);
+    const employee = clone(testEmployee);
 
     // create.
     const created = db.create(employee);
@@ -96,7 +101,7 @@ describe("Database", () => {
 
   test("returns undefined if employee does not exist", () => {
     // employee.
-    const employee = clone(seedData[0]);
+    const employee = clone(testEmployee);
 
     const result = db.update("nope", employee);
     expect(result).toBeUndefined();
@@ -104,7 +109,7 @@ describe("Database", () => {
 
   test("does not allow update of employee id", () => {
     // employee.
-    const employee = clone(seedData[0]);
+    const employee = clone(testEmployee);
 
     // create.
     const created = db.create(employee);

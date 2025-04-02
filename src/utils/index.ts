@@ -1,1 +1,1 @@
-export { uid, delay } from "./utils";
+export { uid, networkDelay } from "./utils";

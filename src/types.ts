@@ -5,7 +5,7 @@ type Person = {
   /** First name. */
   firstName: string;
   /** Last name. */
-  lastName?: string;
+  lastName: string;
 };
 
 /**
@@ -16,6 +16,8 @@ export type Employee = Person & {
   id?: string;
   /** Dependents of the employee. */
   dependents: Dependent[];
+  /** Cost of health benefits per paycheck. */
+  benefitsCost: number;
 };
 
 /**
