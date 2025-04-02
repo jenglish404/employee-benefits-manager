@@ -1,93 +1,123 @@
 import { Employee } from "~/types";
-import { InMemoryDatabase } from "./db";
 import { seedData } from "./data";
+import { Database } from "./db";
 
-const mockEmployee: Employee = JSON.parse(JSON.stringify(seedData[0]));
+/** Clone and return an employee. */
+const clone = (emp: Employee): Employee => JSON.parse(JSON.stringify(emp));
 
-describe("InMemoryDatabase", () => {
-  const db = new InMemoryDatabase();
+describe("Database", () => {
+  const db = new Database();
 
-  beforeEach(() => {
+  afterEach(() => {
     db.clearAll();
   });
 
   test("creates db entry", () => {
-    // create new entry.
-    const result = db.create("test", mockEmployee);
-    expect(result).toEqual(true);
+    // new employee.
+    const employee = clone(seedData[0]);
+
+    // create.
+    const created = db.create(employee);
+    expect(created).toBeDefined();
+    expect(created?.id).toBeDefined();
 
     // read it back.
-    const createdVal = db.read("test");
-    expect(createdVal).toEqual(mockEmployee);
+    const readVal = db.read(created?.id!);
+    expect(readVal).toBeDefined();
+    expect(employee.id).toEqual(readVal?.id);
   });
 
   test("updates db entry", () => {
-    // create new entry.
-    const result = db.create("test", mockEmployee);
-    expect(result).toEqual(true);
+    // new employee.
+    const employee = clone(seedData[0]);
 
-    const updatedEmployee = { ...mockEmployee, firstName: "updated" };
+    // create.
+    const created = db.create(employee);
+    if (!created) fail("employee not created");
 
     // update.
-    const updated = db.update("test", updatedEmployee);
-    expect(updated).toEqual(true);
+    created!.lastName = "updatedLastName";
+    const updated = db.update(created.id!, created);
+    if (!updated) fail("employee not updated");
 
     // read it back.
-    const updatedVal = db.read("test");
-    expect(updatedVal).toEqual(updatedEmployee);
+    const updatedVal = db.read(updated.id!);
+    expect(updatedVal?.lastName).toEqual("updatedLastName");
   });
 
   test("gets all db entries", () => {
     // create entries.
     seedData.forEach((emp) => {
-      db.create(emp.id, emp);
+      db.create(emp);
     });
 
     // assert entries are equal to inputs.
-    const result = db.getAll();
-    let i = 0;
-    result.forEach((value, _) => {
-      expect(value).toEqual(seedData[i]);
-      i++;
+    const all = db.getAll();
+    all.forEach((emp, i) => {
+      expect(emp.firstName).toEqual(seedData[i].firstName);
+      expect(emp.lastName).toEqual(seedData[i].lastName);
+      expect(emp.dependents).toEqual(seedData[i].dependents);
     });
   });
 
   test("deletes entry", () => {
+    // new employee.
+    const employee = clone(seedData[0]);
+
     // create.
-    db.create("test", mockEmployee);
+    const created = db.create(employee);
+    if (!created) fail("employee not created");
 
-    // verify it's there.
-    const result = db.read("test");
-    expect(result).toEqual(mockEmployee);
-
-    // delete it.
-    const deleted = db.delete("test");
+    // delete.
+    const deleted = db.delete(created.id!);
     expect(deleted).toBe(true);
 
     // should now be undefined.
-    const entry = db.read("test");
+    const entry = db.read(created.id!);
     expect(entry).toBeUndefined();
   });
 
-  test("returns false if created entry already exists", () => {
-    // create.
-    db.create("test", mockEmployee);
+  test("returns undefined if created entry already exists", () => {
+    // new employee.
+    const employee = clone(seedData[0]);
 
-    // try creating with the same key.
-    const result = db.create("test", mockEmployee);
-    expect(result).toEqual(false);
+    // create.
+    const created = db.create(employee);
+    if (!created) fail("employee not created");
+
+    // try creating the same employee.
+    const result = db.create(created);
+    expect(result).toBeUndefined();
 
     // original value persists.
-    const createdVal = db.read("test");
-    expect(createdVal).toEqual(mockEmployee);
+    const createdVal = db.read(created.id!);
+    expect(createdVal).toEqual(created);
   });
 
-  test("returns false if key to update does not exist", () => {
-    const result = db.update("nope", mockEmployee);
-    expect(result).toEqual(false);
+  test("returns undefined if employee does not exist", () => {
+    // employee.
+    const employee = clone(seedData[0]);
+
+    const result = db.update("nope", employee);
+    expect(result).toBeUndefined();
   });
 
-  test("returns false if key to delete does not exist", () => {
+  test("does not allow update of employee id", () => {
+    // employee.
+    const employee = clone(seedData[0]);
+
+    // create.
+    const created = db.create(employee);
+    if (!created) fail("employee not created");
+
+    // attempt to change id.
+    const origId = created.id;
+    created.id = "nope";
+    const updated = db.update(origId!, created);
+    expect(updated).toBeUndefined();
+  });
+
+  test("returns false if employee to delete does not exist", () => {
     const result = db.delete("nope");
     expect(result).toEqual(false);
   });

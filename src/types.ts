@@ -13,7 +13,7 @@ type Person = {
  */
 export type Employee = Person & {
   /** Employee ID. */
-  id: string;
+  id?: string;
   /** Dependents of the employee. */
   dependents: Dependent[];
 };
@@ -23,5 +23,14 @@ export type Employee = Person & {
  */
 export type Dependent = Person & {
   /** Dependent ID. */
-  id: string;
+  id?: string;
+};
+
+/**
+ * Upsert employee mutation data.
+ */
+export type EmployeeMutation = {
+  firstName?: string;
+  lastName?: string;
+  dependents?: Dependent[];
 };
