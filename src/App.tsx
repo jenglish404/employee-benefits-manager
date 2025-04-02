@@ -1,28 +1,23 @@
-import { Container, Typography } from "@mui/material";
 import { EmployeeApi } from "./api";
-import { useEffect, useState } from "react";
-import { Employee } from "./types";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Root from "./pages/Root";
+import { EmployeeApiProvider } from "./contexts";
+import Home from "./pages/Home";
+import Benefits from "./pages/Benefits";
 
 const api = new EmployeeApi();
 
-function App() {
-  const [employees, setEmployees] = useState<Employee[]>([]);
-
-  useEffect(() => {
-    const load = async () => {
-      const all = await api.getAll();
-      setEmployees(all);
-      console.log(all);
-    };
-
-    load();
-  }, []);
-
+export default function App() {
   return (
-    <Container maxWidth="md">
-      <Typography variant="h5">Benefits</Typography>
-    </Container>
+    <EmployeeApiProvider value={api}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Root />}>
+            <Route index element={<Home />} />
+            <Route path=":employeeId" element={<Benefits />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </EmployeeApiProvider>
   );
 }
-
-export default App;

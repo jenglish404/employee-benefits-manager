@@ -1,5 +1,5 @@
 import { Database } from "~/db";
-import { Dependent, Employee, EmployeeMutation } from "~/types";
+import { ApiResponse, Dependent, Employee, EmployeeMutation } from "~/types";
 import { networkDelay } from "~/utils";
 import { seedData } from "./data";
 
@@ -33,11 +33,13 @@ export class EmployeeApi {
    * @param mutation The employee to create.
    * @returns The created employee.
    */
-  createEmployee = async (mutation: EmployeeMutation): Promise<Employee> => {
+  createEmployee = async (
+    mutation: EmployeeMutation
+  ): Promise<ApiResponse<Employee>> => {
     await networkDelay();
 
     if (!mutation.firstName) {
-      throw new Error("First name is required.");
+      return { error: "First name is required." };
     }
 
     const firstName = mutation.firstName;
@@ -48,10 +50,10 @@ export class EmployeeApi {
     const employee = this.db.create(toCreate);
 
     if (!employee) {
-      throw new Error("There was a problem creating the employee record.");
+      return { error: "There was a problem creating the employee record." };
     }
 
-    return employee;
+    return { data: employee };
   };
 
   /**
@@ -60,15 +62,15 @@ export class EmployeeApi {
    * @param id ID of the employee.
    * @returns The employee.
    */
-  readEmployee = async (id: string): Promise<Employee> => {
+  readEmployee = async (id: string): Promise<ApiResponse<Employee>> => {
     await networkDelay();
 
     const employee = this.db.read(id);
     if (!employee) {
-      throw new Error(`Not Found, id: ${id}`);
+      return { error: `Not Found, id: ${id}` };
     }
 
-    return employee;
+    return { data: employee };
   };
 
   /**
@@ -81,12 +83,12 @@ export class EmployeeApi {
   updateEmployee = async (
     id: string,
     mutation: EmployeeMutation
-  ): Promise<Employee> => {
+  ): Promise<ApiResponse<Employee>> => {
     await networkDelay();
 
     const employee = this.db.read(id);
     if (!employee) {
-      throw new Error(`Not Found, id: ${id}`);
+      return { error: `Not Found, id: ${id}` };
     }
 
     // Determine update values.
@@ -111,10 +113,10 @@ export class EmployeeApi {
 
     const updated = this.db.update(id, toUpdate);
     if (!updated) {
-      throw new Error("There was a problem updating the employee record.");
+      return { error: `There was a problem updating the employee record.` };
     }
 
-    return updated;
+    return { data: updated };
   };
 
   /**

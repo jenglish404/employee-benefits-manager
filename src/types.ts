@@ -36,3 +36,11 @@ export type EmployeeMutation = {
   lastName?: string;
   dependents?: Dependent[];
 };
+
+/** API response. */
+export type ApiResponse<T> = {
+  /** Reponse data, if any. */
+  data?: T;
+  /** Error message, if any. */
+  error?: string;
+};
