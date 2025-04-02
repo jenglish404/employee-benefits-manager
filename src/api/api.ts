@@ -15,6 +15,11 @@ const DEPENDENT_BENEFIT_COST_PER_YEAR = 500;
 export class EmployeeApi {
   private db: Database;
 
+  /**
+   * Constructor.
+   *
+   * @param seed Whether to seed with employee data (default: `true`);
+   */
   constructor(seed: boolean = true) {
     this.db = new Database();
     if (seed) {
