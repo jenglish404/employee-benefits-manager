@@ -34,7 +34,9 @@ To get this up and running, please do the following:
 1. Run: `npm run dev`
 1. Go to [http://localhost:3000](http://localhost:3000)
 
-You will see a dashboard listing the seeded employees. You can create new employees and update existing ones. While the "backend" is wired for `delete`, I did not add functionality for deleting employees to the UI.
+You will see a dashboard listing the seeded employees. You can create new employees and update existing ones.
+
+While the "backend" is wired for `delete`, I did not add functionality for deleting employees to the UI.
 
 ## Test it
 
@@ -49,4 +51,6 @@ This project is using:
 1. [Vite](https://vite.dev/guide/): A lightning fast build tool with a great developer experience.
 1. [React](https://react.dev/): Great for composing frontends from individual components.
 1. [Material UI](https://mui.com/material-ui/getting-started/): A React component library, so that things look nice.
+1. [react-hook-form](https://www.react-hook-form.com/get-started/): Performant, flexible and extensible form validation for React.
+1. [zod](https://zod.dev/): TypeScript schema validation that works with [react-hook-form](https://react-hook-form.com/get-started#SchemaValidation).
 1. [Jest](https://jestjs.io/docs/getting-started): For running unit tests.
