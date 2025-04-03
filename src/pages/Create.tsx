@@ -97,7 +97,7 @@ export default function Create() {
       <Stack spacing={3} maxWidth={800} width={1}>
         <Typography variant="h5">Create Employee</Typography>
 
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="center" pb={3}>
           <CostSummary currentCost={cost} />
         </Box>
 

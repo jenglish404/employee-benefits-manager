@@ -2,6 +2,7 @@ import {
   AppBar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Drawer,
   IconButton,
@@ -23,6 +24,7 @@ const drawerWidth = 300;
 
 export default function Root() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const api = useEmployeeApi();
 
@@ -31,14 +33,18 @@ export default function Root() {
     const load = async () => {
       const all = await api.getAll();
       setEmployees(all);
+      setLoading(false);
     };
 
     load();
   }, []);
 
+  /** Refresh the employee data. */
   const handleRefresh = async () => {
+    setLoading(true);
     const all = await api.getAll();
     setEmployees(all);
+    setLoading(false);
   };
 
   return (
@@ -90,7 +96,11 @@ export default function Root() {
       </Drawer>
       <Box component="main" flexGrow={1} p={3}>
         <Toolbar />
-        <Outlet context={{ onRefresh: handleRefresh, employees }} />
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Outlet context={{ onRefresh: handleRefresh, employees }} />
+        )}
       </Box>
     </Box>
   );

@@ -127,7 +127,7 @@ export default function Update() {
           Update Employee: {`${employee.firstName} ${employee.lastName}`}
         </Typography>
 
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="center" pb={3}>
           <CostSummary currentCost={employee.benefitsCost} updatedCost={cost} />
         </Box>
 
