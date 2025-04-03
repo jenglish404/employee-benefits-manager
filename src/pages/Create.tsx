@@ -78,7 +78,7 @@ export default function Create() {
   /** Form submit handler. */
   const onSubmit = async (data: CreateFormData) => {
     setIsBusy(true);
-    const created = await api.createEmployee(data);
+    await api.createEmployee(data);
     onRefresh();
     setIsBusy(false);
     navigate(`/`);
