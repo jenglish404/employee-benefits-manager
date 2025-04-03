@@ -20,6 +20,18 @@ export const networkDelay = async (): Promise<void> => {
 };
 
 /**
+ * Format a number for display.
+ *
+ * @param num The number.
+ * @returns The number with commas and formatted to two decimal places.
+ */
+export const formatNumber = (num: number) =>
+  num.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+/**
  * Business logic to calculate the cost of benefits per paycheck for an employee.
  *
  * 1. Cost of benefits is `EMPLOYEE_BENEFIT_COST_PER_YEAR`/yr for the employee (default: $1,000/yr).

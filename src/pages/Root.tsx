@@ -90,7 +90,7 @@ export default function Root() {
       </Drawer>
       <Box component="main" flexGrow={1} p={3}>
         <Toolbar />
-        <Outlet context={{ onRefresh: handleRefresh }} />
+        <Outlet context={{ onRefresh: handleRefresh, employees }} />
       </Box>
     </Box>
   );

@@ -8,6 +8,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { EMPLOYEE_SALARY_PER_PAY_PERIOD } from "~/constants";
+import { formatNumber } from "~/utils";
 
 type CostSummaryProps = {
   currentCost: number;
@@ -21,7 +23,10 @@ export default function CostSummary({
 }: CostSummaryProps) {
   // Only have an `updatedCost` on the Update page.
   const isCreate = updatedCost === undefined;
-  const currentCostDisplay = `$${currentCost.toFixed(2)}`;
+  const currentCostDisplay = `$${formatNumber(currentCost)}`;
+  const salaryDisplay = `$${formatNumber(EMPLOYEE_SALARY_PER_PAY_PERIOD)}`;
+  let netPay = EMPLOYEE_SALARY_PER_PAY_PERIOD - currentCost;
+  let netPayDisplay = `$${formatNumber(netPay)}`;
 
   // Smaller summary for Create page.
   if (isCreate) {
@@ -31,15 +36,27 @@ export default function CostSummary({
           <TableHead>
             <TableRow>
               <TableCell colSpan={2} align="center">
-                Cost Summary
+                Summary per Pay Period
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell variant="head">Cost per Pay Period</TableCell>
+              <TableCell variant="head">Salary</TableCell>
               <TableCell>
-                <Typography color="success">{currentCostDisplay}</Typography>
+                <Typography>{salaryDisplay}</Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell variant="head">Benefit Cost</TableCell>
+              <TableCell>
+                <Typography color="error">-{currentCostDisplay}</Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell variant="head">Net Pay</TableCell>
+              <TableCell>
+                <Typography>{netPayDisplay}</Typography>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -48,11 +65,13 @@ export default function CostSummary({
     );
   }
 
-  const updatedCostDisplay = `$${updatedCost.toFixed(2)}`;
+  const updatedCostDisplay = `$${formatNumber(updatedCost)}`;
   const diff = updatedCost - currentCost;
   const diffDisplay =
-    diff < 0 ? `-$${Math.abs(diff).toFixed(2)}` : `$${diff.toFixed(2)}`;
+    diff <= 0 ? `$${formatNumber(Math.abs(diff))}` : `-$${formatNumber(diff)}`;
   const diffVariant = diff <= 0 ? "success" : "error";
+  netPay = EMPLOYEE_SALARY_PER_PAY_PERIOD - updatedCost;
+  netPayDisplay = `$${formatNumber(netPay)}`;
 
   return (
     <TableContainer component={Paper} sx={{ maxWidth: 400 }}>
@@ -60,29 +79,39 @@ export default function CostSummary({
         <TableHead>
           <TableRow>
             <TableCell colSpan={2} align="center">
-              Cost Summary
+              Summary per Pay Period
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell variant="head">Cost per Pay Period</TableCell>
+            <TableCell variant="head">Salary</TableCell>
             <TableCell>
-              <Typography color="success">{currentCostDisplay}</Typography>
+              <Typography>{salaryDisplay}</Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell variant="head">Benefit Cost</TableCell>
+            <TableCell>
+              <Typography color="error">-{currentCostDisplay}</Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell variant="head">Cost with Updates</TableCell>
             <TableCell>
-              <Typography color="success">{updatedCostDisplay}</Typography>
+              <Typography>-{updatedCostDisplay}</Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell variant="head">Difference</TableCell>
             <TableCell>
-              <Typography color={diffVariant} fontWeight="bold">
-                {diffDisplay}
-              </Typography>
+              <Typography color={diffVariant}>{diffDisplay}</Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell variant="head">Net Pay</TableCell>
+            <TableCell>
+              <Typography>{netPayDisplay}</Typography>
             </TableCell>
           </TableRow>
         </TableBody>

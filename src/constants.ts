@@ -4,5 +4,8 @@ export const EMPLOYEE_BENEFIT_COST_PER_YEAR = 1000;
 /** The base cost of dependent health benefits per year. */
 export const DEPENDENT_BENEFIT_COST_PER_YEAR = 500;
 
-/** Set a reasonable limit so the UI doesn't get out of control. */
+/** The amount each employee is paid per pay period. */
+export const EMPLOYEE_SALARY_PER_PAY_PERIOD = 2000;
+
+/** Limit for dependents. If it goes beyond this, we'd need to rethink the UI design. */
 export const DEPENDENT_LIMIT = 10;

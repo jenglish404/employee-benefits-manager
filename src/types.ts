@@ -47,5 +47,8 @@ export type ApiResponse<T> = {
 
 /** Data passed via the Root Outlet. */
 export type RootContext = {
+  /** Callback to refresh root data. */
   onRefresh: () => Promise<void>;
+  /** List of all employees. */
+  employees: Employee[];
 };

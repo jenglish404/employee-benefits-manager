@@ -1,1 +1,1 @@
-export { uid, networkDelay, getBenefitsCost } from "./utils";
+export { uid, networkDelay, formatNumber, getBenefitsCost } from "./utils";
