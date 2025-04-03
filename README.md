@@ -1,6 +1,6 @@
 # Employee Benefits Manager
 
-The goal of this coding exercise is to deign a UI and backend for managing employee health benefits.
+The goal of this coding exercise was to design a UI and backend for managing employee health benefits.
 
 Requirements:
 
@@ -54,3 +54,5 @@ This project is using:
 1. [react-hook-form](https://www.react-hook-form.com/get-started/): Performant, flexible and extensible form validation for React.
 1. [zod](https://zod.dev/): TypeScript schema validation that works with [react-hook-form](https://react-hook-form.com/get-started#SchemaValidation).
 1. [Jest](https://jestjs.io/docs/getting-started): For running unit tests.
+
+Have fun!
