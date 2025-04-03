@@ -1,6 +1,7 @@
 import {
   AppBar,
   Box,
+  Button,
   Divider,
   Drawer,
   IconButton,
@@ -18,6 +19,11 @@ import { Link as RouterLink, Outlet, useNavigate } from "react-router";
 import { useEmployeeApi } from "~/contexts/apiContext";
 import { Employee } from "~/types";
 
+/** Data passed via the Root Outlet. */
+export type RootContext = {
+  onRefresh: () => Promise<void>;
+};
+
 const drawerWidth = 300;
 
 export default function Root() {
@@ -34,6 +40,11 @@ export default function Root() {
 
     load();
   }, []);
+
+  const handleRefresh = async () => {
+    const all = await api.getAll();
+    setEmployees(all);
+  };
 
   return (
     <Box display="flex">
@@ -68,6 +79,11 @@ export default function Root() {
         </Toolbar>
         <Divider />
         <List>
+          <ListItem>
+            <Button variant="contained" onClick={() => navigate("/create")}>
+              Create
+            </Button>
+          </ListItem>
           {employees.map((emp) => (
             <ListItem key={emp.id} disablePadding>
               <ListItemButton onClick={() => navigate(`/${emp.id}`)}>
@@ -79,7 +95,7 @@ export default function Root() {
       </Drawer>
       <Box component="main" flexGrow={1} p={3}>
         <Toolbar />
-        <Outlet />
+        <Outlet context={{ onRefresh: handleRefresh }} />
       </Box>
     </Box>
   );
