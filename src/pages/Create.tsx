@@ -81,7 +81,7 @@ export default function Create() {
     const created = await api.createEmployee(data);
     onRefresh();
     setIsBusy(false);
-    navigate(`/${created.data?.id}`);
+    navigate(`/`);
   };
 
   useEffect(() => {
