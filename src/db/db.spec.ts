@@ -1,5 +1,5 @@
 import { Employee } from "~/types";
-import { Database } from "./db";
+import { Database } from "~/db";
 
 const testEmployee: Employee = {
   firstName: "James",

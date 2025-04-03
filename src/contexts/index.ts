@@ -1,1 +1,1 @@
-export { EmployeeApiProvider } from "./apiContext";
+export { EmployeeApiProvider, useEmployeeApi } from "./apiContext";

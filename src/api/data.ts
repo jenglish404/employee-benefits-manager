@@ -21,8 +21,8 @@ export const seedData: EmployeeMutation[] = [
     ],
   },
   {
-    firstName: "Padme",
-    lastName: "Amidala",
+    firstName: "Darth",
+    lastName: "Vader",
     dependents: [
       { firstName: "Luke", lastName: "Skywalker" },
       { firstName: "Leia", lastName: "Organa" },
@@ -37,9 +37,9 @@ export const seedData: EmployeeMutation[] = [
     firstName: "Daenerys",
     lastName: "Targaryen",
     dependents: [
-      { firstName: "Drogon", lastName: "" },
-      { firstName: "Rhaegal", lastName: "" },
-      { firstName: "Viserion", lastName: "" },
+      { firstName: "Drogon", lastName: "Targaryen" },
+      { firstName: "Rhaegal", lastName: "Targaryen" },
+      { firstName: "Viserion", lastName: "Targaryen" },
     ],
   },
 ];

@@ -53,7 +53,7 @@ export class Database {
       return;
     }
 
-    if (id !== value.id) {
+    if (value.id && id !== value.id) {
       // Cannot update id property.
       return;
     }

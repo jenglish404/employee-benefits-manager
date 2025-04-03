@@ -16,13 +16,8 @@ import {
 import HomeIcon from "@mui/icons-material/Home";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, Outlet, useNavigate } from "react-router";
-import { useEmployeeApi } from "~/contexts/apiContext";
+import { useEmployeeApi } from "~/contexts";
 import { Employee } from "~/types";
-
-/** Data passed via the Root Outlet. */
-export type RootContext = {
-  onRefresh: () => Promise<void>;
-};
 
 const drawerWidth = 300;
 

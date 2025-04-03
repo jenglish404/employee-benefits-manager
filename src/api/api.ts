@@ -1,13 +1,7 @@
 import { Database } from "~/db";
 import { ApiResponse, Dependent, Employee, EmployeeMutation } from "~/types";
-import { networkDelay } from "~/utils";
+import { getBenefitsCost, networkDelay } from "~/utils";
 import { seedData } from "./data";
-
-/** The base cost of employee health benefits per year. */
-const EMPLOYEE_BENEFIT_COST_PER_YEAR = 1000;
-
-/** The base cost of dependent health benefits per year. */
-const DEPENDENT_BENEFIT_COST_PER_YEAR = 500;
 
 /**
  * The employee API with fake network delays.
@@ -105,10 +99,11 @@ export class EmployeeApi {
       : employee.dependents;
 
     const toUpdate: Employee = {
+      id: employee.id,
       firstName,
       lastName,
       dependents,
-      benefitsCost: this.getBenefitsCost(firstName, dependents),
+      benefitsCost: getBenefitsCost(firstName, dependents),
     };
 
     const updated = this.db.update(id, toUpdate);
@@ -133,41 +128,6 @@ export class EmployeeApi {
   };
 
   /**
-   * Business logic to calculate the cost of benefits per paycheck for an employee.
-   *
-   * 1. Cost of benefits is `EMPLOYEE_BENEFIT_COST_PER_YEAR`/yr for the employee (default: $1,000/yr).
-   *    - If their first name starts with "A", they get a 10% discount.
-   * 2. Each dependent incurs a cost of `DEPENDENT_BENEFIT_COST_PER_YEAR`/yr (default: $500/yr).
-   *    - If their first name starts with "A", they get a 10% discount.
-   *
-   * An employee is paid 26 times per year.
-   *
-   * @param firstName The first name of the employee.
-   * @param dependents The employee's dependents.
-   * @returns The cost of benefits per paycheck.
-   */
-  private getBenefitsCost = (firstName: string, dependents: Dependent[]) => {
-    // 1. Calculate employee cost per year.
-    const employeeCost = firstName.toUpperCase().startsWith("A")
-      ? EMPLOYEE_BENEFIT_COST_PER_YEAR * 0.9
-      : EMPLOYEE_BENEFIT_COST_PER_YEAR;
-
-    // 2. Calculate the dependent(s) cost per year.
-    const dependentCost = dependents.reduce((acc, cur) => {
-      const cost = cur.firstName.toUpperCase().startsWith("A")
-        ? DEPENDENT_BENEFIT_COST_PER_YEAR * 0.9
-        : DEPENDENT_BENEFIT_COST_PER_YEAR;
-      return acc + cost;
-    }, 0);
-
-    // Total cost per year.
-    const totalCost = employeeCost + dependentCost;
-
-    // Employee is paid 26 times per year.
-    return totalCost / 26;
-  };
-
-  /**
    * Helper for creating an employee.
    *
    * @param firstName First name of the employee.
@@ -184,7 +144,7 @@ export class EmployeeApi {
       firstName,
       lastName,
       dependents,
-      benefitsCost: this.getBenefitsCost(firstName, dependents),
+      benefitsCost: getBenefitsCost(firstName, dependents),
     };
 
     return employee;

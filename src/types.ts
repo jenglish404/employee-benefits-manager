@@ -44,3 +44,8 @@ export type ApiResponse<T> = {
   /** Error message, if any. */
   error?: string;
 };
+
+/** Data passed via the Root Outlet. */
+export type RootContext = {
+  onRefresh: () => Promise<void>;
+};
