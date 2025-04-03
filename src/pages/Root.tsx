@@ -37,7 +37,7 @@ export default function Root() {
     };
 
     load();
-  }, []);
+  }, [api]);
 
   /** Refresh the employee data. */
   const handleRefresh = async () => {

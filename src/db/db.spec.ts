@@ -28,6 +28,7 @@ describe("Database", () => {
     expect(created?.id).toBeDefined();
 
     // read it back.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     const readVal = db.read(created?.id!);
     expect(readVal).toBeDefined();
     expect(employee.id).toEqual(readVal?.id);

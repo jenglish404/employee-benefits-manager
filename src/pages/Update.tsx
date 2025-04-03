@@ -110,7 +110,7 @@ export default function Update() {
     };
 
     load();
-  }, [employeeId]);
+  }, [api, employeeId, reset]);
 
   if (loading) {
     return <CircularProgress />;
