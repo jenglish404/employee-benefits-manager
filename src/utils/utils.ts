@@ -8,15 +8,16 @@ import { Dependent } from "~/types";
 export const uid = () => Math.random().toString(36).substring(2, 15);
 
 /**
- * Create a network delay between 300ms to 1000ms.
+ * Create a network delay.
  *
+ * @param forceDelay A specific delay in ms. If not provided, a random value is used.
  * @returns A promise that can be awaited.
  */
-export const networkDelay = async (): Promise<void> => {
+export const networkDelay = async (forceDelay?: number): Promise<void> => {
   const min = 300;
   const max = 1000;
-  const delay = Math.floor(Math.random() * (max - min + 1) + min);
-  new Promise((resolve) => setTimeout(resolve, delay));
+  const delay = forceDelay || Math.floor(Math.random() * (max - min + 1) + min);
+  return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
 /**
